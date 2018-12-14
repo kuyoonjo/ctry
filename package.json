@@ -1,6 +1,6 @@
 {
   "name": "ctry",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "ctry tries to resolve a promise with timeout and chance configurations.",
   "license": "MIT",
   "repository": "https://github.com/kuyoonjo/ctry.git",
