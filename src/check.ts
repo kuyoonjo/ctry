@@ -1,12 +1,12 @@
 import { c_sleep } from './sleep';
 
 /**
- * ctry
- * @param ccheckFunc a function returns a promise
+ * c_check
+ * @param checkFunc a function returns a promise
  * @param after do check after in ms
  * @param tries number of changes
  */
-export async function check(
+export async function c_check(
   checkFunc: CheckFunction,
   after: number = 5000,
   tries: number = 1
