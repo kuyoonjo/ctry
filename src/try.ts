@@ -5,18 +5,21 @@
  * @Last Modified time: 2018-11-12 21:17:40
  */
 
-export const ERR_TIMEOUT = 'ERR_TIMEOUT';
+import { c_sleep } from './sleep';
+
+export const ERR_TIMEOUT = '__ERR_TIMEOUT__';
 
 /**
- * ctry
+ * c_try
  * @param ctryFunc a function returns a promise
  * @param timeout timeout in ms
  * @param tries number of changes
  */
-export function ctry<T>(
+export function c_try<T>(
   ctryFunc: CtryFunction<T>,
   timeout: number = 5000,
-  tries: number = 1
+  tries: number = 1,
+  retryAfter?: number
 ): Promise<T> {
   const tf = () =>
     new Promise<never>((_, reject) => {
@@ -27,11 +30,16 @@ export function ctry<T>(
     });
 
   const tryit = async (t = 1): Promise<T> => {
+    const ts = Date.now();
     try {
       const res = await Promise.race([ctryFunc(t), tf()]);
       return res;
     } catch (e) {
-      if (ERR_TIMEOUT === e.message && t < tries) {
+      if (e instanceof Error && ERR_TIMEOUT === e.message && t < tries) {
+        const elapsed = Date.now() - ts;
+        if (retryAfter === undefined) retryAfter = timeout;
+        const delay = retryAfter - elapsed;
+        if (delay > 0) await c_sleep(delay);
         return tryit(t + 1);
       } else {
         throw e;

@@ -8,6 +8,7 @@
     ],
     "target": "es5",
     "strict": true,
+    "useUnknownInCatchVariables": false,
     "outDir": "./lib",
     "preserveConstEnums": true,
     "removeComments": true,
